@@ -1,16 +1,23 @@
 package com.restorun.backendapplication.model;
 
 import com.restorun.backendapplication.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 public class Employee extends User{
 
     // Employee specific fields
 
+    @Getter
+    @Setter
     @Column
     private String password;
+
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
     public Employee() {
         super();
@@ -49,14 +56,6 @@ public class Employee extends User{
     @Override
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     // Implement toString and toJson methods
