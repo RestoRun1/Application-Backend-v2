@@ -8,13 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class CustomerService {
+public class CustomerService implements UserAuthenticationService{
 
     private final CustomerRepository customerRepository;
 
     @Autowired
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    @Override
+    public Customer authenticate(String username, String password) {
+        // Here you'd add logic to verify the username and password, e.g.:
+        return customerRepository.findByUsernameAndPassword(username, password);
     }
 
     public boolean deleteCustomer(Long id) {

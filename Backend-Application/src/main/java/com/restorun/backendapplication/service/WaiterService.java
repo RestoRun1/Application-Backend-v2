@@ -6,11 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WaiterService {
+public class WaiterService implements UserAuthenticationService{
     private final WaiterRepository waiterRepository;
     @Autowired
     public WaiterService(WaiterRepository waiterRepository) {
         this.waiterRepository = waiterRepository;
+    }
+
+    @Override
+    public Waiter authenticate(String username, String password) {
+        // Here you'd add logic to verify the username and password, e.g.:
+        return waiterRepository.findByUsernameAndPassword(username, password);
     }
 
     public boolean deleteWaiter(Long id) {

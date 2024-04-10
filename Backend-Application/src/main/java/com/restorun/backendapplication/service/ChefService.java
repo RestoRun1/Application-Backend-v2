@@ -8,13 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 @Transactional
 @Service
-public class ChefService {
+public class ChefService implements UserAuthenticationService{
 
     private final ChefRepository chefRepository;
     @Autowired
     public ChefService(ChefRepository chefRepository) {
         this.chefRepository = chefRepository;
     }
+
+    @Override
+    public Chef authenticate(String username, String password) {
+        // Here you'd add logic to verify the username and password, e.g.:
+        return chefRepository.findByUsernameAndPassword(username, password);
+    }
+
     public List<Chef> retrieveAllChefs() {
         return chefRepository.findAll();
     }

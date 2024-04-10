@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class AdminService {
+public class AdminService implements UserAuthenticationService{
 
     private final AdminRepository adminRepository;
 
@@ -21,6 +21,12 @@ public class AdminService {
     @Transactional(readOnly = true)
     public List<Admin> retrieveAllAdmins() {
         return adminRepository.findAll();
+    }
+
+    @Override
+    public Admin authenticate(String username, String password) {
+        // Here you'd add logic to verify the username and password, e.g.:
+        return adminRepository.findByUsernameAndPassword(username, password);
     }
 
     @Transactional

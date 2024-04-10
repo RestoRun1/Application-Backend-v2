@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class ManagerService {
+public class ManagerService implements UserAuthenticationService{
     private final ManagerRepository managerRepository;
     @Autowired
     public ManagerService(ManagerRepository managerRepository) {
@@ -21,6 +21,12 @@ public class ManagerService {
     @Transactional(readOnly = true)
     public Manager retrieveManagerById(Long id) {
         return managerRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Manager authenticate(String username, String password) {
+        // Here you'd add logic to verify the username and password, e.g.:
+        return managerRepository.findByUsernameAndPassword(username, password);
     }
 
     public boolean saveManager(Manager manager) {
