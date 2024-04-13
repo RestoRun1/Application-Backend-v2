@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.service;
 
+import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.model.Customer;
 import com.restorun.backendapplication.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class CustomerService implements UserAuthenticationService{
         this.customerRepository = customerRepository;
     }
 
-    @Override
+    @Transactional(readOnly = true)
     public Customer authenticate(String username, String password) {
         // Here you'd add logic to verify the username and password, e.g.:
         return customerRepository.findByUsernameAndPassword(username, password);
@@ -31,6 +32,10 @@ public class CustomerService implements UserAuthenticationService{
     public boolean saveCustomer(Customer customer) {
         customerRepository.save(customer);
         return true;
+    }
+
+    public Customer findByUsername(String username) {
+        return customerRepository.findByUsername(username);
     }
 
     public Customer retrieveCustomerById(Long id) {

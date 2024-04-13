@@ -1,4 +1,5 @@
 package com.restorun.backendapplication.service;
+import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.repository.ChefRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ public class ChefService implements UserAuthenticationService{
         this.chefRepository = chefRepository;
     }
 
-    @Override
+    @Transactional(readOnly = true)
     public Chef authenticate(String username, String password) {
         // Here you'd add logic to verify the username and password, e.g.:
         return chefRepository.findByUsernameAndPassword(username, password);
@@ -50,5 +51,9 @@ public class ChefService implements UserAuthenticationService{
 
     public Chef retrieveChefById(Long id) {
         return chefRepository.findById(id).orElse(null);
+    }
+
+    public Chef findByUsername(String username) {
+        return chefRepository.findByUsername(username);
     }
 }

@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.service;
 
+import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.model.Manager;
 import com.restorun.backendapplication.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ManagerService implements UserAuthenticationService{
         return managerRepository.findById(id).orElse(null);
     }
 
-    @Override
+    @Transactional(readOnly = true)
     public Manager authenticate(String username, String password) {
         // Here you'd add logic to verify the username and password, e.g.:
         return managerRepository.findByUsernameAndPassword(username, password);
@@ -32,6 +33,10 @@ public class ManagerService implements UserAuthenticationService{
     public boolean saveManager(Manager manager) {
         managerRepository.save(manager);
         return true;
+    }
+
+    public Manager findByUsername(String username) {
+        return managerRepository.findByUsername(username);
     }
 
     public boolean deleteManager(Long managerId) {

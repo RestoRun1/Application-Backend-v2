@@ -23,7 +23,7 @@ public class AdminService implements UserAuthenticationService{
         return adminRepository.findAll();
     }
 
-    @Override
+    @Transactional(readOnly = true)
     public Admin authenticate(String username, String password) {
         // Here you'd add logic to verify the username and password, e.g.:
         return adminRepository.findByUsernameAndPassword(username, password);
@@ -74,6 +74,10 @@ public class AdminService implements UserAuthenticationService{
 
     public Admin retrieveAdminById(Long id) {
         return adminRepository.findById(id).orElse(null);
+    }
+
+    public Admin findByUsername(String username) {
+        return adminRepository.findByUsername(username);
     }
 
 
