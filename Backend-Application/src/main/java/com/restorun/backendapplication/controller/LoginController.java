@@ -1,17 +1,18 @@
 package com.restorun.backendapplication.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.restorun.backendapplication.dto.AuthenticatedUser;
 import com.restorun.backendapplication.dto.LoginRequest;
+import com.restorun.backendapplication.security.JwtUtil;
 import com.restorun.backendapplication.service.*;
-import com.restorun.backendapplication.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.Stream;
+import java.util.List;
 import java.util.Objects;
-import org.springframework.http.HttpStatus;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,11 +24,11 @@ public class LoginController {
     @Autowired private EmployeeService employeeService;
     @Autowired private ManagerService managerService;
     @Autowired private WaiterService waiterService;
-    @Autowired private JwtUtil jwtUtil;  // Inject JwtUtil
+    @Autowired private JwtUtil jwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Object user = Stream.of(adminService, chefService, customerService, employeeService, managerService, waiterService)
+        AuthenticatedUser user = Stream.of(adminService, chefService, customerService, employeeService, managerService, waiterService)
                 .map(service -> service.authenticate(request.getUsername(), request.getPassword()))
                 .filter(Objects::nonNull)
                 .findFirst()
@@ -37,25 +38,25 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
 
-        // Generate JWT token
-        final String token = jwtUtil.generateToken(request.getUsername());
-        return ResponseEntity.ok().body(new AuthResponse(token));
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRoles());
+        return ResponseEntity.ok(new AuthResponse(token, user.getRoles()));
     }
 
-    // Inner class to encapsulate the authentication response
     static class AuthResponse {
         private String token;
+        private List<String> roles;
 
-        public AuthResponse(String token) {
+        public AuthResponse(String token, List<String> roles) {
             this.token = token;
+            this.roles = roles;
         }
 
         public String getToken() {
             return token;
         }
 
-        public void setToken(String token) {
-            this.token = token;
+        public List<String> getRoles() {
+            return roles;
         }
     }
 }

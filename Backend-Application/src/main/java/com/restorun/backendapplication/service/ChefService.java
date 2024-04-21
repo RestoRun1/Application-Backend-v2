@@ -1,4 +1,5 @@
 package com.restorun.backendapplication.service;
+import com.restorun.backendapplication.dto.AuthenticatedUser;
 import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.repository.ChefRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.restorun.backendapplication.model.Chef;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 @Transactional
 @Service
@@ -17,10 +19,15 @@ public class ChefService implements UserAuthenticationService{
         this.chefRepository = chefRepository;
     }
 
+
     @Transactional(readOnly = true)
-    public Chef authenticate(String username, String password) {
-        // Here you'd add logic to verify the username and password, e.g.:
-        return chefRepository.findByUsernameAndPassword(username, password);
+    public AuthenticatedUser authenticate(String username, String password) {
+        Chef chef = chefRepository.findByUsernameAndPassword(username, password);
+        if (chef != null) {
+            // Assuming the role is fetched or predefined, here just an example
+            return new AuthenticatedUser(chef.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+        }
+        return null;
     }
 
     public List<Chef> retrieveAllChefs() {

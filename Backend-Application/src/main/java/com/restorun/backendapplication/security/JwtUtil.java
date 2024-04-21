@@ -5,8 +5,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.util.Date;
-import java.util.function.Function;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
@@ -15,43 +17,17 @@ public class JwtUtil {
     private String secretKey;
 
     @Value("${jwt.expiration}")
-    private long expirationTime; // expiration time in milliseconds
+    private long jwtExpirationInMillis;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("roles", roles); // Add roles to the claims
+
         return Jwts.builder()
-                .setSubject(username)
+                .setClaims(claims)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMillis))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
-    }
-
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    public boolean validateToken(String token, String username) {
-        final String usernameFromToken = extractUsername(token);
-        return (username.equals(usernameFromToken) && !isTokenExpired(token));
     }
 }

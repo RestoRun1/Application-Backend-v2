@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.service;
 
+import com.restorun.backendapplication.dto.AuthenticatedUser;
 import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.model.Manager;
 import com.restorun.backendapplication.repository.ManagerRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +27,13 @@ public class ManagerService implements UserAuthenticationService{
     }
 
     @Transactional(readOnly = true)
-    public Manager authenticate(String username, String password) {
-        // Here you'd add logic to verify the username and password, e.g.:
-        return managerRepository.findByUsernameAndPassword(username, password);
+    public AuthenticatedUser authenticate(String username, String password) {
+        Manager manager = managerRepository.findByUsernameAndPassword(username, password);
+        if (manager != null) {
+            // Assuming the role is fetched or predefined, here just an example
+            return new AuthenticatedUser(manager.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+        }
+        return null;
     }
 
     public boolean saveManager(Manager manager) {

@@ -1,11 +1,14 @@
 package com.restorun.backendapplication.service;
 
+import com.restorun.backendapplication.dto.AuthenticatedUser;
 import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.model.Employee;
 import com.restorun.backendapplication.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 
 @Service
 public class EmployeeService implements UserAuthenticationService{
@@ -18,9 +21,13 @@ public class EmployeeService implements UserAuthenticationService{
     }
 
     @Transactional(readOnly = true)
-    public Employee authenticate(String username, String password) {
-        // Here you'd add logic to verify the username and password, e.g.:
-        return employeeRepository.findByUsernameAndPassword(username, password);
+    public AuthenticatedUser authenticate(String username, String password) {
+        Employee employee = employeeRepository.findByUsernameAndPassword(username, password);
+        if (employee != null) {
+            // Assuming the role is fetched or predefined, here just an example
+            return new AuthenticatedUser(employee.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+        }
+        return null;
     }
 
     public boolean deleteEmployee(Long id) {

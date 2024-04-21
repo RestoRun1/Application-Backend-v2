@@ -1,11 +1,14 @@
 package com.restorun.backendapplication.service;
 
+import com.restorun.backendapplication.dto.AuthenticatedUser;
 import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.model.Customer;
 import com.restorun.backendapplication.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 
 @Transactional
 @Service
@@ -19,9 +22,13 @@ public class CustomerService implements UserAuthenticationService{
     }
 
     @Transactional(readOnly = true)
-    public Customer authenticate(String username, String password) {
-        // Here you'd add logic to verify the username and password, e.g.:
-        return customerRepository.findByUsernameAndPassword(username, password);
+    public AuthenticatedUser authenticate(String username, String password) {
+        Customer customer = customerRepository.findByUsernameAndPassword(username, password);
+        if (customer != null) {
+            // Assuming the role is fetched or predefined, here just an example
+            return new AuthenticatedUser(customer.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+        }
+        return null;
     }
 
     public boolean deleteCustomer(Long id) {
