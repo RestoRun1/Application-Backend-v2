@@ -16,7 +16,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()  // Disable CSRF protection as it's not needed for stateless APIs typically
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()  // Permit all Swagger-related paths
+                        .requestMatchers("/api/auth/login","/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()  // Permit all Swagger-related paths
                         .anyRequest().authenticated())  // All other requests require authentication
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);  // Use stateless session; session won't be used to store user's state.
 
