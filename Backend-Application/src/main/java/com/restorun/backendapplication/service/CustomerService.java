@@ -31,6 +31,10 @@ public class CustomerService {
         return customerRepository.findById(id).orElse(null);
     }
 
+    public Customer retrieveByUsernamePassword(String username, String password){
+        return customerRepository.findByUsernamePassword(username, password);
+    }
+
     // planned business logic
     /*
     make reservation

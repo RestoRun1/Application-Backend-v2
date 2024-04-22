@@ -78,6 +78,25 @@ public class CustomerController {
         return ResponseEntity.ok("Customer saved successfully");
     }
 
+    @GetMapping("login")
+    public ResponseEntity<Customer> loginCustomer(
+        @RequestParam String username,
+        @RequestParam String password
+    ){
+
+        Customer customer = customerService.retrieveByUsernamePassword(username, password);
+        
+        if(customer == null){
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        else{
+            System.out.println(customer.toString());
+        }
+        
+        return ResponseEntity.ok(customer);
+    }
+
     
 
 
