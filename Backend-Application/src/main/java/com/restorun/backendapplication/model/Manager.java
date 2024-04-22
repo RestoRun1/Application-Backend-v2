@@ -72,9 +72,9 @@ public class Manager extends Employee { // Assuming Manager extends from Employe
         return false;
     }
 
-    public boolean addEvent(Event event){
+    public boolean saveEvent(Event event){
         try{
-            restaurant.addEvent(event);
+            restaurant.saveEvent(event);
             return true;
         }
         catch (Exception e){

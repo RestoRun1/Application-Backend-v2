@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.model;
 
 import lombok.Getter;
@@ -24,3 +25,4 @@ public class Kitchen {
 
     // Assuming an Order class exists with a many-to-one relationship to Kitchen
 }
+*/

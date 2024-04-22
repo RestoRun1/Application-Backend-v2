@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -56,7 +57,8 @@ public class KitchenController {
 
     }
     // @TODO, A RESTAURANT CAN HAVE MULTIPLE KITCHENS?
-    /*
+    */
+/*
     @GetMapping("/retrieveAllKitchens")
     public ResponseEntity<List<Kitchen>> retrieveAllKitchens() {
 
@@ -66,5 +68,7 @@ public class KitchenController {
         }
         return ResponseEntity.ok(kitchens);
     }
-    */
+    *//*
+
 }
+*/

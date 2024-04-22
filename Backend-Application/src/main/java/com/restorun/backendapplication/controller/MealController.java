@@ -1,6 +1,7 @@
 package com.restorun.backendapplication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restorun.backendapplication.model.Meal;
 import com.restorun.backendapplication.service.MealService;
@@ -15,47 +16,47 @@ import java.util.Optional;
 @RequestMapping("/api/meal")
 public class MealController {
     private final MealService mealService;
+    private final ObjectMapper objectMapper;
 
     // Autowire might be unnecessary.
     @Autowired
-    public MealController(MealService mealService) {
+    public MealController(MealService mealService, ObjectMapper objectMapper) {
         this.mealService = mealService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/retrieveMealById")
     public ResponseEntity<Meal> retrieveMealById(@RequestBody Long id) {
         Optional<Meal> meal = mealService.retrieveMealById(id);
         return meal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-
     }
 
     @PostMapping("/saveMeal")
-    public ResponseEntity<String> saveMeal(@RequestBody String meal) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        Meal mealObj = mapper.readValue(meal, Meal.class);
-        boolean saved = mealService.saveMeal(mealObj);
-
-        if (!saved) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<String> saveMeal(@RequestBody JsonNode mealJson) throws JsonProcessingException {
+        Meal meal;
+        try {
+            meal = objectMapper.treeToValue(mealJson, Meal.class);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body("{\"error\": \"Error processing JSON\"}");
         }
 
-        return ResponseEntity.ok("Meal saved successfully");
+        boolean isSaved = mealService.saveMeal(meal);
+        if (isSaved) {
+            return ResponseEntity.ok("{\"message\": \"Meal saved successfully\"}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"error\": \"Failed to save meal\"}");
+        }
     }
 
-    @DeleteMapping("/deleteMeal")
+    @DeleteMapping("/deleteMeal/{id}")
     public ResponseEntity<String> deleteMeal(@RequestBody Long id) {
-        Optional<Meal> meal = mealService.retrieveMealById(id);
-        if (meal.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        boolean isDeleted = mealService.deleteMeal(id);
+        if (isDeleted) {
+            return ResponseEntity.ok("{\"message\": \"Meal deleted successfully\"}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"error\": \"Failed to delete meal\"}");
         }
-        boolean deleted = mealService.deleteMeal(meal);
-        if (!deleted) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok("Meal deleted successfully");
-
     }
-
 
     // return all meals in the system
     @GetMapping("/retrieveAllMeals")

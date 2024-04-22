@@ -40,7 +40,6 @@ public class OrderService {
                     existingOrder.setDiningTable(existingOrder.getDiningTable());
                     existingOrder.setStatus(existingOrder.getStatus());
                     existingOrder.setMeals(existingOrder.getMeals());
-                    existingOrder.setKitchen(existingOrder.getKitchen());
                     existingOrder.setTotalPrice(existingOrder.getTotalPrice());
                     orderRepository.save(existingOrder);
                     return true; // Indicates success

@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.service;
 
 import com.restorun.backendapplication.model.Inventory;
@@ -47,3 +48,4 @@ public class KitchenService {
                 .orElseThrow(() -> new RuntimeException("Kitchen not found with id: " + kitchen.getId()));
     }
 }
+*/
