@@ -53,6 +53,7 @@ public class CustomerController {
         String email = (String) customerBody.get("email");
         String password = (String) customerBody.get("password"); 
         String confirmedPassword = (String) customerBody.get("confirmedPassword");
+        String phoneNumber = (String) customerBody.get("phoneNumber");
 
         if(username.length() == 0){
             return ResponseEntity.badRequest().body("Username cannot be empty");
@@ -65,8 +66,9 @@ public class CustomerController {
         Customer customer = new Customer();
         customer.setUsername(username);
         customer.setEmail(email);
-        customer.setPassword(confirmedPassword);
+        customer.setPassword(password);
         customer.setRole(Role.CUSTOMER.getRole());
+        customer.setPhoneNumber(phoneNumber);
         
         boolean saved = customerService.saveCustomer(customer);
         if (!saved) {
@@ -96,9 +98,4 @@ public class CustomerController {
         
         return ResponseEntity.ok(customer);
     }
-
-    
-
-
-
 }
