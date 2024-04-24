@@ -30,4 +30,25 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
+
+    public List<String> getRolesFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.get("roles", List.class);
+    }
+
+    // Method to extract username from the JWT token
+    public String extractUsername(String token) {
+        return getClaimsFromToken(token).getSubject();
+    }
+
+    // Utility method to extract all claims from a token
+    private Claims getClaimsFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey.getBytes())
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }

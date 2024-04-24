@@ -7,34 +7,41 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.restorun.backendapplication.security.JwtUtil;  // Import JwtUtil
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtUtil jwtUtil;  // Declare JwtUtil
+
+    public SecurityConfig(JwtUtil jwtUtil) {  // Constructor injection for JwtUtil
+        this.jwtUtil = jwtUtil;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // Disable CSRF as it's not typically needed for API security
+                .csrf().disable()
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll() // Swagger UI
-                        .requestMatchers("/api/auth/**").permitAll() // Login endpoint
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // Admin only endpoints
-                        .requestMatchers("/waiter/**").hasAuthority("ROLE_WAITER") // Waiter only endpoints
-                        .requestMatchers("/chef/**").hasAuthority("ROLE_CHEF") // Chef only endpoints
-                        .requestMatchers("/customer/**").hasAuthority("ROLE_CUSTOMER") // Customer only endpoints
-                        .requestMatchers("/employee/**").hasAuthority("ROLE_EMPLOYEE") // Employee only endpoints
-                        .requestMatchers("/manager/**").hasAuthority("ROLE_MANAGER") // Manager only endpoints
-                        .anyRequest().authenticated()) // Other requests
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No session will be used
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/waiter/**").hasAuthority("ROLE_WAITER")
+                        .requestMatchers("/chef/**").hasAuthority("ROLE_CHEF")
+                        .requestMatchers("/customer/**").hasAuthority("ROLE_CUSTOMER")
+                        .requestMatchers("/employee/**").hasAuthority("ROLE_EMPLOYEE")
+                        .requestMatchers("/manager/**").hasAuthority("ROLE_MANAGER")
+                        .anyRequest().authenticated())
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class); // JWT filter
+                .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
     public JwtRequestFilter jwtRequestFilter() {
-        return new JwtRequestFilter(); // Ensure this bean is correctly implemented
+        return new JwtRequestFilter(jwtUtil);  // Pass jwtUtil to JwtRequestFilter
     }
 }

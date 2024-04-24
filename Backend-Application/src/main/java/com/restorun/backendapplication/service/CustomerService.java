@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 @Transactional
 @Service
@@ -34,6 +35,10 @@ public class CustomerService implements UserAuthenticationService{
     public boolean deleteCustomer(Long id) {
         customerRepository.deleteById(id);
         return true;
+    }
+
+    public List<Customer> retrieveAllCustomers() {
+        return customerRepository.findAll();
     }
 
     public boolean saveCustomer(Customer customer) {
