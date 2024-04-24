@@ -1,15 +1,17 @@
 package com.restorun.backendapplication.service;
 
+import com.restorun.backendapplication.dto.AuthenticatedUser;
 import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
-public class AdminService {
+public class AdminService implements UserAuthenticationService{
 
     private final AdminRepository adminRepository;
 
@@ -21,6 +23,16 @@ public class AdminService {
     @Transactional(readOnly = true)
     public List<Admin> retrieveAllAdmins() {
         return adminRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public AuthenticatedUser authenticate(String username, String password) {
+        Admin admin = adminRepository.findByUsernameAndPassword(username, password);
+        if (admin != null) {
+            // Assuming the role is fetched or predefined, here just an example
+            return new AuthenticatedUser(admin.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+        }
+        return null;
     }
 
     @Transactional
@@ -68,6 +80,10 @@ public class AdminService {
 
     public Admin retrieveAdminById(Long id) {
         return adminRepository.findById(id).orElse(null);
+    }
+
+    public Admin findByUsername(String username) {
+        return adminRepository.findByUsername(username);
     }
 
 

@@ -1,1 +1,1 @@
-CREATE DATABASE restorun
+CREATE DATABASE restorun;
