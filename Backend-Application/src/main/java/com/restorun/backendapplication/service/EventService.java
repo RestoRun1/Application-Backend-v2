@@ -18,6 +18,10 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
+    public Event retrieveEventById(Long id) {
+        return eventRepository.findById(id)
+                .orElse(null);
+    }
     @Transactional
     public boolean deleteEvent(Long id) {
         boolean exists = eventRepository.existsById(id);
@@ -42,13 +46,13 @@ public class EventService {
     }
 
     @Transactional
-    public boolean addEvent(Event event) {
+    public boolean saveEvent(Event event) {
         eventRepository.save(event);
         return true;
     }
 
     @Transactional
-    public List<Event> getAllEvents(){
+    public List<Event> retrieveAllEvents(){
         return eventRepository.findAll();
     }
 

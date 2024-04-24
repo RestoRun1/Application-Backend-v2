@@ -26,9 +26,22 @@ public class MealService {
     public boolean saveMeal(Meal meal) {
         mealRepository.save(meal);
         return true;
+        /*boolean result = updateMeal(meal);
+        try {
+            if (!result) {
+                mealRepository.save(meal);
+            }
+            return true;
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }*/
     }
 
-    public boolean deleteMeal(Optional<Meal> meal) {
+    public boolean deleteMeal(Long id)
+    {
+        Optional<Meal> meal = mealRepository.findById(id);
         if (meal.isPresent()){
             mealRepository.delete(meal.get());
             return true;

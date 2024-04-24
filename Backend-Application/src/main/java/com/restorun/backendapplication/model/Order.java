@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "customer_orders")
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,17 +35,17 @@ public class Order {
     @JoinColumn(name = "table_id")
     private DiningTable diningTable; // Assuming a DiningTable class exists
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kitchen_id")
-    private Kitchen kitchen; // Link to the Kitchen handling the order
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
-    public Order(Long id, List<Meal> meals, Double totalPrice, PaymentStatus status, DiningTable diningTable, Kitchen kitchen) {
+    public Order(Long id, List<Meal> meals, Double totalPrice, PaymentStatus status, DiningTable diningTable) {
         this.id = id;
         this.meals = meals;
         this.totalPrice = totalPrice;
         this.status = status;
         this.diningTable = diningTable;
-        this.kitchen = kitchen;
     }
 // Constructors, getters, setters, and other methods are handled by Lombok
 }
