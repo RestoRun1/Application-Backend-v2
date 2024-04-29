@@ -21,23 +21,27 @@ public class JwtUtil {
 
     public String generateToken(String username, List<String> roles) {
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles); // Add roles to the claims
-
+        claims.put("roles", roles);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMillis))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact();
     }
 
+
+
     public List<String> getRolesFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(secretKey)
+                .setSigningKey(secretKey.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
-        return claims.get("roles", List.class);
+        List<String> roles = claims.get("roles", List.class);
+        System.out.println("Roles from token: " + roles);  // Log extracted roles
+        return roles;
     }
+
 
     // Method to extract username from the JWT token
     public String extractUsername(String token) {

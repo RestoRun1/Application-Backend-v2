@@ -25,7 +25,7 @@ public class ChefService implements UserAuthenticationService{
         Chef chef = chefRepository.findByUsernameAndPassword(username, password);
         if (chef != null) {
             // Assuming the role is fetched or predefined, here just an example
-            return new AuthenticatedUser(chef.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+            return new AuthenticatedUser(chef.getUsername(), Collections.singletonList("ROLE_CHEF"));
         }
         return null;
     }

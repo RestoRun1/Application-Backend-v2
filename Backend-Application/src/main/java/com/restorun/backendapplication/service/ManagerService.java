@@ -31,7 +31,7 @@ public class ManagerService implements UserAuthenticationService{
         Manager manager = managerRepository.findByUsernameAndPassword(username, password);
         if (manager != null) {
             // Assuming the role is fetched or predefined, here just an example
-            return new AuthenticatedUser(manager.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+            return new AuthenticatedUser(manager.getUsername(), Collections.singletonList("ROLE_MANAGER"));
         }
         return null;
     }

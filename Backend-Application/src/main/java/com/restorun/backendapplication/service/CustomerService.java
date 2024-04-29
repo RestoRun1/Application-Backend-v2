@@ -27,7 +27,7 @@ public class CustomerService implements UserAuthenticationService{
         Customer customer = customerRepository.findByUsernameAndPassword(username, password);
         if (customer != null) {
             // Assuming the role is fetched or predefined, here just an example
-            return new AuthenticatedUser(customer.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+            return new AuthenticatedUser(customer.getUsername(), Collections.singletonList("ROLE_CUSTOMER"));
         }
         return null;
     }

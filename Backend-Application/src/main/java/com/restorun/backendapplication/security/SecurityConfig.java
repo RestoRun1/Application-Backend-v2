@@ -2,6 +2,7 @@ package com.restorun.backendapplication.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +12,7 @@ import com.restorun.backendapplication.security.JwtUtil;  // Import JwtUtil
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;  // Declare JwtUtil
@@ -26,12 +28,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/waiter/**").hasAuthority("ROLE_WAITER")
-                        .requestMatchers("/chef/**").hasAuthority("ROLE_CHEF")
-                        .requestMatchers("/customer/**").hasAuthority("ROLE_CUSTOMER")
-                        .requestMatchers("/employee/**").hasAuthority("ROLE_EMPLOYEE")
-                        .requestMatchers("/manager/**").hasAuthority("ROLE_MANAGER")
                         .anyRequest().authenticated())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

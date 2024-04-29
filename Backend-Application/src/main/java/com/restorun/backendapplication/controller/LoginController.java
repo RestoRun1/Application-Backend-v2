@@ -28,8 +28,16 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        System.out.println("Login attempt for: " + request.getUsername());
+
         AuthenticatedUser user = Stream.of(adminService, chefService, customerService, employeeService, managerService, waiterService)
-                .map(service -> service.authenticate(request.getUsername(), request.getPassword()))
+                .map(service -> {
+                    AuthenticatedUser au = service.authenticate(request.getUsername(), request.getPassword());
+                    if (au != null) {
+                        System.out.println("Authenticated user: " + au.getUsername() + " with roles: " + au.getRoles());
+                    }
+                    return au;
+                })
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
@@ -38,10 +46,11 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
 
+        System.out.println("Generating token for: " + user.getUsername() + " with roles: " + user.getRoles());
         String token = jwtUtil.generateToken(user.getUsername(), user.getRoles());
-        System.out.println(user.getUsername());
         return ResponseEntity.ok(new AuthResponse(token, user.getRoles()));
     }
+
 
     static class AuthResponse {
         private String token;

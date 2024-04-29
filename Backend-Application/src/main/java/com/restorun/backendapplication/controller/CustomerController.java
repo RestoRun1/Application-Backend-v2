@@ -10,6 +10,7 @@ import com.restorun.backendapplication.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,12 +29,14 @@ public class CustomerController {
         this.objectMapper = objectMapper;
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("retrieveCustomerById")
     public ResponseEntity<Customer> retrieveCustomerById(@RequestBody Long id) {
         Optional<Customer> customer = Optional.ofNullable(customerService.retrieveCustomerById(id));
         return customer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("saveCustomer")
     @Operation(summary = "Save a customer", description = "Saves a new customer or updates an existing customer based on the provided details")
     public ResponseEntity<String> saveCustomer(@RequestBody JsonNode customerJson) {
@@ -51,6 +54,7 @@ public class CustomerController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("deleteCustomer/{id}")
     public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
         boolean isDeleted = customerService.deleteCustomer(id);
@@ -61,6 +65,7 @@ public class CustomerController {
         }
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/retrieveAllCustomers")
     public ResponseEntity<List<Customer>> retrieveAllCustomers() {
         List<Customer> customers = customerService.retrieveAllCustomers();

@@ -53,8 +53,8 @@ public class AdminController {
         return ResponseEntity.ok(dbResponse);
     }
 
-    @DeleteMapping("/deleteAdmin")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/deleteAdmin")
     public ResponseEntity<String> deleteAdmin(@RequestBody String id) {
         boolean deleted = adminService.deleteAdmin(Long.valueOf(id));
         if (!deleted) {
@@ -69,8 +69,8 @@ public class AdminController {
      * @return
      * @throws JsonProcessingException
      */
-    @PostMapping("/addAdmin")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/addAdmin")
     public ResponseEntity<String> addAdmin(@RequestBody String admin ) throws JsonProcessingException {
 
         ObjectMapper mapper = new ObjectMapper();

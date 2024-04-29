@@ -25,7 +25,7 @@ public class EmployeeService implements UserAuthenticationService{
         Employee employee = employeeRepository.findByUsernameAndPassword(username, password);
         if (employee != null) {
             // Assuming the role is fetched or predefined, here just an example
-            return new AuthenticatedUser(employee.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+            return new AuthenticatedUser(employee.getUsername(), Collections.singletonList("ROLE_EMPLOYEE"));
         }
         return null;
     }

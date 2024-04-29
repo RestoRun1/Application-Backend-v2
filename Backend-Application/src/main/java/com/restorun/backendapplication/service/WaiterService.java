@@ -23,7 +23,7 @@ public class WaiterService implements UserAuthenticationService{
         Waiter waiter = waiterRepository.findByUsernameAndPassword(username, password);
         if (waiter != null) {
             // Assuming the role is fetched or predefined, here just an example
-            return new AuthenticatedUser(waiter.getUsername(), Collections.singletonList("ROLE_ADMIN"));
+            return new AuthenticatedUser(waiter.getUsername(), Collections.singletonList("ROLE_WAITER"));
         }
         return null;
     }
