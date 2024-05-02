@@ -61,11 +61,7 @@ public class CustomerService implements UserAuthenticationService{
     }
 
     public Customer retrieveByUsernamePassword(String username, String password){
-        return customerRepository.findByUsernamePassword(username, password);
-    }
-
-    public List<Customer> retrieveAllCustomers() {
-        return customerRepository.findAll();
+        return customerRepository.findByUsernameAndPassword(username, password);
     }
 
     public Customer findOrCreateCustomer(CustomerDTO customerDTO) {

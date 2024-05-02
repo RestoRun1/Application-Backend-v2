@@ -21,8 +21,6 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
     private final ObjectMapper objectMapper;
 
-    private final ObjectMapper objectMapper;
-
     // Autowire might be unnecessary.
     @Autowired
     public RestaurantController(RestaurantService restaurantService, ObjectMapper objectMapper) {

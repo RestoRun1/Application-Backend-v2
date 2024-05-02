@@ -33,10 +33,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("No user found with username: " + username);
         }
 
+        // @TODO
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 "", // Since we do not handle passwords here
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole()))
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().toString()))
         );
     }
 
