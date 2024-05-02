@@ -1,24 +1,37 @@
 package com.restorun.backendapplication.service;
 
 import com.restorun.backendapplication.dto.CustomerDTO;
+import com.restorun.backendapplication.dto.AuthenticatedUser;
+import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.model.Customer;
 import com.restorun.backendapplication.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Transactional
 @Service
-public class CustomerService {
+public class CustomerService implements UserAuthenticationService{
 
     private final CustomerRepository customerRepository;
 
     @Autowired
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public AuthenticatedUser authenticate(String username, String password) {
+        Customer customer = customerRepository.findByUsernameAndPassword(username, password);
+        if (customer != null) {
+            // Assuming the role is fetched or predefined, here just an example
+            return new AuthenticatedUser(customer.getUsername(), Collections.singletonList("ROLE_CUSTOMER"));
+        }
+        return null;
     }
 
     public boolean deleteCustomer(Long id) {
@@ -30,13 +43,25 @@ public class CustomerService {
         return false;  // No restaurant found to delete
     }
 
+    public List<Customer> retrieveAllCustomers() {
+        return customerRepository.findAll();
+    }
+
     public boolean saveCustomer(Customer customer) {
         customerRepository.save(customer);
         return true;
     }
 
+    public Customer findByUsername(String username) {
+        return customerRepository.findByUsername(username);
+    }
+
     public Customer retrieveCustomerById(Long id) {
         return customerRepository.findById(id).orElse(null);
+    }
+
+    public Customer retrieveByUsernamePassword(String username, String password){
+        return customerRepository.findByUsernamePassword(username, password);
     }
 
     public List<Customer> retrieveAllCustomers() {

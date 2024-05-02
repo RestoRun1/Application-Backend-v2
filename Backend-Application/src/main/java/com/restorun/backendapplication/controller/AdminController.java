@@ -7,6 +7,7 @@ import com.restorun.backendapplication.service.AdminService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class AdminController {
      *
      * @return
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/retrieveAllAdmins")
     public ResponseEntity<List<Admin>> retrieveAllAdmins() {
         List<Admin> admins = adminService.retrieveAllAdmins();
@@ -36,6 +38,7 @@ public class AdminController {
     }
 
     // method infos needs to be fixed. not working as a controller.
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/retrieveAdminById")
     public ResponseEntity<Admin> retrieveAdminById(@RequestBody String admin) throws JsonProcessingException {
 
@@ -50,6 +53,7 @@ public class AdminController {
         return ResponseEntity.ok(dbResponse);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/deleteAdmin")
     public ResponseEntity<String> deleteAdmin(@RequestBody String id) {
         boolean deleted = adminService.deleteAdmin(Long.valueOf(id));
@@ -65,6 +69,7 @@ public class AdminController {
      * @return
      * @throws JsonProcessingException
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/addAdmin")
     public ResponseEntity<String> addAdmin(@RequestBody String admin ) throws JsonProcessingException {
 

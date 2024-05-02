@@ -4,7 +4,7 @@ import com.restorun.backendapplication.enums.Role;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-abstract class User {
+public abstract class User {
 
     // properties of the class
 
