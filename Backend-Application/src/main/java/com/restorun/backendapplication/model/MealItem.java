@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.model;
 
 import jakarta.persistence.*;
@@ -25,3 +26,4 @@ public class MealItem {
     @Column(length = 1024)
     private String description;
 }
+*/

@@ -33,13 +33,8 @@ public class Chef extends Employee {
     }
 
     @Override
-    public String getRole() {
-        return this.role.toString();
-    }
-
-    @Override
-    public void setRole(String role) {
-        this.role = Role.valueOf(role);
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -64,10 +59,6 @@ public class Chef extends Employee {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 
     public Restaurant getRestaurant(){

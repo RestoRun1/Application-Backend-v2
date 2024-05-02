@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.model;
 
 import lombok.Getter;
@@ -30,3 +31,4 @@ public class MenuItem {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 }
+*/

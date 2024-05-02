@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.service;
 
 import com.restorun.backendapplication.model.TableSeat;
@@ -53,3 +54,4 @@ public class TableSeatService {
                 .orElseThrow(() -> new RuntimeException("TableSeat not found with id: " + tableSeat.getId()));
     }
 }
+*/

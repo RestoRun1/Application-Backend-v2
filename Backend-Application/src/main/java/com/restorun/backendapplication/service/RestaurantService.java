@@ -19,7 +19,6 @@ public class RestaurantService {
         this.restaurantRepository = restaurantRepository;
     }
 
-    @Transactional(readOnly = true)
     public Optional<Restaurant> retrieveRestaurantById(Long id) {
         return restaurantRepository.findById(id);
     }
@@ -29,13 +28,15 @@ public class RestaurantService {
         return true;
     }
 
-    public boolean deleteRestaurant(Optional<Restaurant> restaurant) {
-        if (restaurant.isPresent()){
+    public boolean deleteRestaurant(Long id) {
+        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+        if (restaurant.isPresent()) {
             restaurantRepository.delete(restaurant.get());
-            return true;
+            return true;  // Successfully deleted
         }
-        return true;
+        return false;  // No restaurant found to delete
     }
+
 
     public List<Restaurant> retrieveAllRestaurants() {
         return restaurantRepository.findAll();
@@ -47,7 +48,6 @@ public class RestaurantService {
                     existingRestaurant.setAddress(existingRestaurant.getAddress());
                     existingRestaurant.setEmail(existingRestaurant.getEmail());
                     existingRestaurant.setEmployees(existingRestaurant.getEmployees());
-                    existingRestaurant.setMenu(existingRestaurant.getMenu());
                     existingRestaurant.setEvents(existingRestaurant.getEvents());
                     existingRestaurant.setManagers(existingRestaurant.getManagers());
                     existingRestaurant.setName(existingRestaurant.getName());

@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,3 +67,4 @@ public class MenuController {
         return ResponseEntity.ok(menus);
     }
 }
+*/

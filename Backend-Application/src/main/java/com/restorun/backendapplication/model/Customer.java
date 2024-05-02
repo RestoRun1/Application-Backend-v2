@@ -13,22 +13,11 @@ public class Customer extends User{
     @Column
     private String password;
 
-    @Column
-    private String phoneNumber;
-
     // Implement payment methods
 
     public Customer() {
         super();
         this.role = Role.CUSTOMER;
-    }
-    
-    public String getPhoneNumber(){
-        return this.phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber){
-        this.phoneNumber = phoneNumber;
     }
 
     @Override
@@ -37,13 +26,13 @@ public class Customer extends User{
     }
 
     @Override
-    public String getRole() {
-        return this.role.toString();
+    public Role getRole() {
+        return this.role;
     }
 
     @Override
-    public void setRole(String role) {
-        this.role = Role.valueOf(role);
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override

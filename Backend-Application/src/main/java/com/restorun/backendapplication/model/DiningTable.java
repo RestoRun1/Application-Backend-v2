@@ -25,12 +25,9 @@ public class DiningTable {
     @Column(nullable = false)
     private Integer seatingCapacity;
 
-    @ManyToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
-    private Reservation reservation;
-
     // TODO
-    public DiningTable(long id, int tableNumber, int seatingCapacity, Set<Reservation> reservations){
-
+    public DiningTable(int tableNumber, int seatingCapacity){
+        this.tableNumber = tableNumber;
+        this.seatingCapacity = seatingCapacity;
     }
 }
