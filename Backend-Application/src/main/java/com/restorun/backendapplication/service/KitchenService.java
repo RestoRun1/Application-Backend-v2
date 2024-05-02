@@ -38,14 +38,14 @@ public class KitchenService {
         return true;
     }
     public boolean updateKitchen(Kitchen kitchen) {
-        return kitchenRepository.findById(kitchen.getId())
+        return kitchenRepository.findById(kitchen.getUserId())
                 .map(existingKitchen -> {
                     existingKitchen.setName(kitchen.getName());
                     existingKitchen.setOrders(kitchen.getOrders());
                     kitchenRepository.save(existingKitchen);
                     return true; // Indicates success
                 })
-                .orElseThrow(() -> new RuntimeException("Kitchen not found with id: " + kitchen.getId()));
+                .orElseThrow(() -> new RuntimeException("Kitchen not found with id: " + kitchen.getUserId()));
     }
 }
 */

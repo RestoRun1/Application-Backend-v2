@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
-
     private final EventService eventService;
     private final ObjectMapper objectMapper;
 
@@ -25,33 +24,6 @@ public class EventController {
     public EventController(EventService eventService, ObjectMapper objectMapper) {
         this.eventService = eventService;
         this.objectMapper = objectMapper;
-    }
-
-    @GetMapping("/retrieveEventById/{id}")
-    public ResponseEntity<Event> retrieveEventById(@PathVariable Long id) {
-        Event event = eventService.retrieveEventById(id);
-        if (event == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(event);
-    }
-
-    @GetMapping("/retrieveAllEvents")
-    public ResponseEntity<List<Event>> retrieveAllEvents() {
-        List<Event> events = eventService.retrieveAllEvents();
-        if (events.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(events);
-    }
-
-    @DeleteMapping("/deleteEvent/{id}")
-    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
-        boolean deleted = eventService.deleteEvent(id);
-        if (!deleted) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok("Event deleted successfully");
     }
 
     @PostMapping("/saveEvent")
@@ -70,6 +42,33 @@ public class EventController {
         } else {
             return ResponseEntity.badRequest().body("{\"error\": \"Failed to save event\"}");
         }
+    }
+
+    @DeleteMapping("/deleteEvent/{id}")
+    public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
+        boolean deleted = eventService.deleteEvent(id);
+        if (!deleted) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok("Event deleted successfully");
+    }
+
+    @GetMapping("/retrieveAllEvents")
+    public ResponseEntity<List<Event>> retrieveAllEvents() {
+        List<Event> events = eventService.retrieveAllEvents();
+        if (events.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(events);
+    }
+
+    @GetMapping("/retrieveEventById/{id}")
+    public ResponseEntity<Event> retrieveEventById(@PathVariable Long id) {
+        Event event = eventService.retrieveEventById(id);
+        if (event == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(event);
     }
 
     @PutMapping("/updateEvent")

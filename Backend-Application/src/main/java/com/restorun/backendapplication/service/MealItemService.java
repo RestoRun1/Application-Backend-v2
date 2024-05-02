@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.service;
 
 import com.restorun.backendapplication.model.MealItem;
@@ -49,3 +50,4 @@ public class MealItemService {
 
     public List<MealItem> retrieveAllMealItems(){ return mealItemRepository.findAll();}
 }
+*/

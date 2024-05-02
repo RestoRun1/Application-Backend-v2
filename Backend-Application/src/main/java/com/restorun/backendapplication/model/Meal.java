@@ -29,19 +29,17 @@ public class Meal {
     @Column(nullable = false)
     private Double rating;
 
-    // remove this later
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
-    public Meal(Long id, String name, String description, Double price, MealCategory category, Double rating, Menu menu) {
+    public Meal(Long id, String name, String description, Double price, MealCategory category, Double rating) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
         this.rating = rating;
-        this.menu = menu;
     }
 // Constructors, getters, setters, and other methods are handled by Lombok
 }

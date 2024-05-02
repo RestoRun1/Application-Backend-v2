@@ -28,8 +28,8 @@ public class Restaurant {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @OneToOne(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Menu menu;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Meal> meals;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Manager> managers = new HashSet<>();

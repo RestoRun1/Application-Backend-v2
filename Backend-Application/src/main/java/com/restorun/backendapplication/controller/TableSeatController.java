@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -67,3 +68,4 @@ public class TableSeatController {
         return ResponseEntity.ok(tableSeats);
     }
 }
+*/

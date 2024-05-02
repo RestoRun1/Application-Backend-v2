@@ -48,7 +48,6 @@ public class RestaurantService {
                     existingRestaurant.setAddress(existingRestaurant.getAddress());
                     existingRestaurant.setEmail(existingRestaurant.getEmail());
                     existingRestaurant.setEmployees(existingRestaurant.getEmployees());
-                    existingRestaurant.setMenu(existingRestaurant.getMenu());
                     existingRestaurant.setEvents(existingRestaurant.getEvents());
                     existingRestaurant.setManagers(existingRestaurant.getManagers());
                     existingRestaurant.setName(existingRestaurant.getName());

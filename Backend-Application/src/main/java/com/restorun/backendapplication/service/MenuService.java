@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.service;
 
 import com.restorun.backendapplication.model.Menu;
@@ -49,3 +50,4 @@ public class MenuService {
 
     public List<Menu> retrieveAllMenus(){return menuRepository.findAll();}
 }
+*/

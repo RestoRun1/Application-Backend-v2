@@ -19,7 +19,6 @@ import java.util.Optional;
 @RequestMapping("/api/restaurant")
 public class RestaurantController {
     private final RestaurantService restaurantService;
-
     private final ObjectMapper objectMapper;
 
     // Autowire might be unnecessary.

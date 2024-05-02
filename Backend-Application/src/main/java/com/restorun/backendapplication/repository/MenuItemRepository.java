@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.repository;
 
 import com.restorun.backendapplication.model.MenuItem;
@@ -9,3 +10,4 @@ import org.springframework.stereotype.Repository;
 @Hidden
 public interface MenuItemRepository extends JpaRepository<MenuItem, Long> {
 }
+*/

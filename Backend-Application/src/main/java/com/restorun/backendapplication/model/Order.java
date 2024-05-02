@@ -17,12 +17,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "order_meals",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "meal_id")
-    )
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "order_meals")
     private List<Meal> meals; // A list of meals in the order
 
     @Column(nullable = false)
@@ -31,21 +27,24 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private PaymentStatus status; // "ready", "pending", "etc..."
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "table_id")
-    private DiningTable diningTable; // Assuming a DiningTable class exists
+    private DiningTable table;
 
-    @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+    /*@Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;*/
 
-    public Order(Long id, List<Meal> meals, Double totalPrice, PaymentStatus status, DiningTable diningTable) {
+    public Order(Long id, List<Meal> meals, Double totalPrice, PaymentStatus status) {
         this.id = id;
         this.meals = meals;
         this.totalPrice = totalPrice;
         this.status = status;
-        this.diningTable = diningTable;
+        //this.diningTable = diningTable;
     }
 // Constructors, getters, setters, and other methods are handled by Lombok
 }

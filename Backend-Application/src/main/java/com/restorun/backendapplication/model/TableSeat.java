@@ -1,3 +1,4 @@
+/*
 package com.restorun.backendapplication.model;
 
 import jakarta.persistence.*;
@@ -46,3 +47,4 @@ public class TableSeat {
     }
 
 }
+*/

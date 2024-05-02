@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restorun.backendapplication.model.Meal;
 import com.restorun.backendapplication.service.MealService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class MealController {
     }
 
     @PostMapping("/saveMeal")
+    @Operation(summary = "Save a meal", description = "Saves a new meal or updates an existing meal based on the provided details")
     public ResponseEntity<String> saveMeal(@RequestBody JsonNode mealJson) throws JsonProcessingException {
         Meal meal;
         try {
@@ -49,13 +51,12 @@ public class MealController {
     }
 
     @DeleteMapping("/deleteMeal/{id}")
-    public ResponseEntity<String> deleteMeal(@RequestBody Long id) {
-        boolean isDeleted = mealService.deleteMeal(id);
-        if (isDeleted) {
-            return ResponseEntity.ok("{\"message\": \"Meal deleted successfully\"}");
-        } else {
-            return ResponseEntity.badRequest().body("{\"error\": \"Failed to delete meal\"}");
+    public ResponseEntity<String> deleteMeal(@PathVariable Long id) {
+        boolean deleted = mealService.deleteMeal(id);
+        if (!deleted) {
+            return ResponseEntity.notFound().build();  // Responds with 404 if no restaurant was found
         }
+        return ResponseEntity.ok("Meal deleted successfully");  // Confirm successful deletion
     }
 
     // return all meals in the system

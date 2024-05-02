@@ -52,9 +52,10 @@ public class MealService {
         return mealRepository.findById(meal.getId())
                 .map(existingMeal -> {
                     existingMeal.setDescription(meal.getDescription());
-                    existingMeal.setMenu(meal.getMenu());
                     existingMeal.setName(meal.getName());
                     existingMeal.setPrice(meal.getPrice());
+                    existingMeal.setCategory(meal.getCategory());
+                    existingMeal.setRating(meal.getRating());
                     mealRepository.save(existingMeal);
                     return true; // Indicates success
                 })

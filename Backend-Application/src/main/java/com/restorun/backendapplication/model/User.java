@@ -4,7 +4,7 @@ import com.restorun.backendapplication.enums.Role;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-public abstract class User {
+abstract class User {
 
     // properties of the class
 
@@ -29,9 +29,9 @@ public abstract class User {
 
     // abstract method to be implemented by the subclasses
     public abstract Long getUserId();
-    public abstract String getRole();
+    public abstract Role getRole();
 
-    public abstract void setRole(String role);
+    public abstract void setRole(Role role);
 
     public abstract String getUsername();
 
