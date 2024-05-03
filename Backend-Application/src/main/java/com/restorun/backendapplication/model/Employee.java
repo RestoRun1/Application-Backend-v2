@@ -9,14 +9,13 @@ import lombok.*;
 public class Employee extends User{
 
     // Employee specific fields
-
     @Getter
     @Setter
     @Column
     private String password;
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 

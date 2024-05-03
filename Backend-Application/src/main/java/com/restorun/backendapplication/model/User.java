@@ -3,6 +3,7 @@ package com.restorun.backendapplication.model;
 import com.restorun.backendapplication.enums.Role;
 import jakarta.persistence.*;
 
+@Inheritance(strategy = InheritanceType.JOINED)
 @MappedSuperclass
 abstract class User {
 
