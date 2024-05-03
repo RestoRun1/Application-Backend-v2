@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Getter
 @Setter
@@ -27,6 +29,7 @@ public class Menu {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
+    @JsonIgnore // Breaks the bidirectional relationship with Menu to prevent infinite recursion
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)

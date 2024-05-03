@@ -3,6 +3,9 @@ package com.restorun.backendapplication.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +28,7 @@ public class Meal {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
+    @JsonIgnore // Breaks the bidirectional relationship with Menu to prevent infinite recursion
     private Menu menu;
 
     public Meal(Long id, String name, String description, Double price, Menu menu) {

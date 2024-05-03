@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +24,14 @@ public class MealController {
     }
 
     @GetMapping("/retrieveMealById")
-    public ResponseEntity<Meal> retrieveMealById(@RequestBody Long id) {
-        Optional<Meal> meal = mealService.retrieveMealById(id);
-        return meal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<List<Meal>> retrieveMealById(@RequestParam Long resId) {
 
+        System.out.println("ID IS ->   " + resId);
+
+        List<Meal> meal = mealService.retrieveMealById(resId);
+        System.out.println(meal.toString());
+        
+        return ResponseEntity.ok(meal);
     }
 
     @PostMapping("/saveMeal")

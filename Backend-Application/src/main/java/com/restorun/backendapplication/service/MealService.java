@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +20,8 @@ public class MealService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Meal> retrieveMealById(Long id) {
-        return mealRepository.findById(id);
+    public List<Meal> retrieveMealById(Long id) {
+        return mealRepository.findMealsByRestaurantId(id);
     }
 
     public boolean saveMeal(Meal meal) {
@@ -47,6 +48,8 @@ public class MealService {
                 })
                 .orElseThrow(() -> new RuntimeException("Meal not found with id: " + meal.getId()));
     }
+
+    public ArrayList<Meal> findMealsByResId(Long id) {return mealRepository.findMealsByRestaurantId(id);}
 
     public List<Meal> retrieveAllMeals() {return mealRepository.findAll();}
 }
