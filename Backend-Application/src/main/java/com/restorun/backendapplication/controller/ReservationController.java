@@ -50,6 +50,11 @@ public class ReservationController {
     @PostMapping("/saveReservation")
     @Operation(summary = "Save a reservation", description = "Saves a new reservation or updates an existing reservation based on the provided details")
     public ResponseEntity<String> saveReservation(@RequestBody JsonNode reservationJson) {
+
+        System.out.println(reservationJson.get("reservationTime"));
+
+        System.out.println(reservationJson.get("numberOfGuests").getClass().toString());
+
         Long tableId = reservationJson.get("tableId").asLong();
         Long customerId = reservationJson.get("customerId").asLong();
         LocalDateTime reservationTime = LocalDateTime.parse(reservationJson.get("reservationTime").asText());

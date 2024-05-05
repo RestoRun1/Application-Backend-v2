@@ -55,6 +55,11 @@ public class CustomerService {
         }
         return customer;
     }
+
+    public Customer retrieveByUsernamePassword(String username, String password){
+        return customerRepository.findByUsernamePassword(username, password);
+    }
+
     /*public Customer retrieveCustomerByEmail(String email) {
         return customerRepository.retrieveCustomerByEmail(email);
     }*/

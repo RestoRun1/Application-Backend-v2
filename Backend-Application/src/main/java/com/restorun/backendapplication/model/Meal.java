@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restorun.backendapplication.enums.MealCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class Meal {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
+    @JsonIgnore
     private Restaurant restaurant;
 
     public Meal(Long id, String name, String description, Double price, MealCategory category, Double rating) {

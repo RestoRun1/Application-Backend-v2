@@ -26,11 +26,11 @@ public class MealController {
         this.objectMapper = objectMapper;
     }
 
-    @GetMapping("/retrieveMealById")
-    public ResponseEntity<Meal> retrieveMealById(@RequestBody Long id) {
-        Optional<Meal> meal = mealService.retrieveMealById(id);
-        return meal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+    // @GetMapping("/retrieveMealById")
+    // public ResponseEntity<Meal> retrieveMealById(@RequestBody Long id) {
+    //     Optional<Meal> meal = mealService.retrieveMealById(id);
+    //     return meal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    // }
 
     @PostMapping("/saveMeal")
     @Operation(summary = "Save a meal", description = "Saves a new meal or updates an existing meal based on the provided details")
@@ -67,5 +67,14 @@ public class MealController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(meals);
+    }
+
+    @GetMapping("/retrieveMealById")
+    public ResponseEntity<List<Meal>> retrieveMealById(@RequestParam Long resId) {
+
+        List<Meal> meal = mealService.findMealsByResId(resId);
+        System.out.println(meal.toString());
+        
+        return ResponseEntity.ok(meal);
     }
 }

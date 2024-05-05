@@ -13,12 +13,23 @@ public class Customer extends User{
     @Column
     private String password;
 
+    @Column
+    private String phoneNumber;
     // Implement payment methods
 
     public Customer() {
         super();
         this.role = Role.CUSTOMER;
     }
+
+    public String getPhoneNumber(){
+        return this.phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber){
+        this.phoneNumber = phoneNumber;
+    }
+
 
     @Override
     public Long getUserId() {
