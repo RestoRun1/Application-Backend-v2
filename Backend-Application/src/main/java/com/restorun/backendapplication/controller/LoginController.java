@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/api/auth")
 public class LoginController {
-
     @Autowired private AdminService adminService;
     @Autowired private ChefService chefService;
     @Autowired private CustomerService customerService;
@@ -41,17 +40,14 @@ public class LoginController {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
-
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-
         System.out.println("Generating token for: " + user.getUsername() + " with roles: " + user.getRoles());
         String token = jwtUtil.generateToken(user.getUsername(), user.getRoles());
+        System.out.println("Generated token: " + token);
         return ResponseEntity.ok(new AuthResponse(token, user.getRoles()));
     }
-
-
     static class AuthResponse {
         private String token;
         private List<String> roles;

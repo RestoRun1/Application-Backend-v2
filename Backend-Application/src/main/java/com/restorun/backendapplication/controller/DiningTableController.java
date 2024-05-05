@@ -29,23 +29,12 @@ public class DiningTableController {
     @PostMapping("/saveDiningTable")
     @Operation(summary = "Save a dining table", description = "Saves a new dining table or updates an existing dining table based on the provided details")
     public ResponseEntity<String> saveDiningTable(@RequestBody JsonNode diningTableJson) {
-        DiningTable diningTable;
-        try {
-            diningTable = objectMapper.treeToValue(diningTableJson, DiningTable.class);
-        } catch (JsonProcessingException e) {
-            // Return an error response if there's an issue with JSON processing
-            return ResponseEntity.badRequest().body("{\"error\": \"Error processing JSON\"}");
-        }
+        int tableNumber = diningTableJson.get("tableNumber").asInt();
+        int seatingCapacity = diningTableJson.get("seatingCapacity").asInt();
+        Long restaurantId = diningTableJson.get("restaurantId").asLong();
 
-        // Attempt to save the restaurant using your service layer
-        boolean isSaved = diningTableService.saveDiningTable(diningTable);
-        if (isSaved) {
-            // Return a success response
-            return ResponseEntity.ok("{\"message\": \"Dining table saved successfully\"}");
-        } else {
-            // Return an error response if saving the restaurant failed
-            return ResponseEntity.badRequest().body("{\"error\": \"Failed to save dining table\"}");
-        }
+        diningTableService.saveDiningTable(tableNumber, seatingCapacity, restaurantId);
+        return ResponseEntity.ok("{\"message\": \"Dining table saved successfully\"}");
     }
 
     @DeleteMapping("/deleteDiningTable/{id}")

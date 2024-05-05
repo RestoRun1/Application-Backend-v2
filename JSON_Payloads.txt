@@ -1,0 +1,80 @@
+JSON PAYLOADS
+
+Order:
+{
+    "mealIds": [1, 2, 3],
+    "tableId": 1,
+    "status": "PENDING"
+}
+
+Meal:
+{
+    "name": "Margherita Pizza",
+    "description": "Classic Italian pizza with fresh mozzarella, basil, and our homemade tomato sauce.",
+    "price": 15.75,
+    "category": "MAIN_COURSE",
+    "rating": 4.7
+}
+{
+    "name": "Caesar Salad",
+    "description": "Crisp romaine lettuce with aged parmesan, croutons, and our special Caesar dressing.",
+    "price": 12.50,
+    "category": "APPETIZER",
+    "rating": 3
+}
+{
+    "name": "Grilled Salmon",
+    "description": "A delicious grilled salmon served with a side of vegetables and lemon butter sauce.",
+    "price": 25.99,
+    "category": "MAIN_COURSE",
+    "rating": 4.5
+}
+
+DiningTable:
+{
+    "tableNumber": 4,
+    "seatingCapacity": 12
+}
+
+Reservation:
+{
+    "customerId": 1,
+    "tableId": 1,
+    "reservationTime": "2024-05-10T19:00:00",
+    "numberOfGuests": 4,
+    "specialRequests": "A table near the window, please."
+}
+
+Customer:
+{
+    "username": "John Doe",
+    "email": "johndoe@example.com",
+    "role": "CUSTOMER",
+    "password": "gizlisifre"
+}
+
+Restaurant:
+{
+    "name": "Gourmet Hub",
+    "address": "123 Foodie Lane, Gastronomy City, 98765",
+    "email": "contact@gourmethub.com",
+    "phoneNumber": "+1-234-567-8901"
+}
+
+Event:
+{
+  "title": "Muse Live at Cavern",
+  "description": "A live performance by the band Muse at the Cavern Club.",
+  "startTime": "1997-05-24T20:00:00",
+  "endTime": "1997-05-24T22:00:00"
+}
+
+Employee:
+{
+    "username": "Onur",
+    "email": "onur@gmail.com",
+    "role": "CHEF",
+    "password": "onursifre123",
+    "restaurantId": 1
+}
+

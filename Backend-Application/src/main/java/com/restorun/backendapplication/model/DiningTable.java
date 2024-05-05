@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class DiningTable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +24,11 @@ public class DiningTable {
 
     @Column(nullable = false)
     private Integer seatingCapacity;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    @JsonIgnore
+    private Restaurant restaurant;
 
     // TODO
     public DiningTable(int tableNumber, int seatingCapacity){

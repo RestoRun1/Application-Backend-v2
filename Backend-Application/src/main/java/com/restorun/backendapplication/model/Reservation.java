@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,10 +21,12 @@ public class Reservation {
 
     @OneToOne
     @JoinColumn(name = "table_id", nullable = false)
+    @JsonIgnore
     private DiningTable table;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
     private Customer customer;
 
     @Column(nullable = false)
@@ -34,6 +37,11 @@ public class Reservation {
 
     @Column(length = 500)
     private String specialRequests;
+
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    @JsonIgnore
+    private Restaurant restaurant;
 
     public Reservation(Long id, DiningTable table, Customer customer, LocalDateTime reservationTime, int numberOfGuests, String specialRequests){
         this.id = id;

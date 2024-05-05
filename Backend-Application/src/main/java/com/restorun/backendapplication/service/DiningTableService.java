@@ -4,6 +4,7 @@ import com.restorun.backendapplication.dto.DiningTableDTO;
 import com.restorun.backendapplication.model.DiningTable;
 import com.restorun.backendapplication.model.Restaurant;
 import com.restorun.backendapplication.repository.DiningTableRepository;
+import com.restorun.backendapplication.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +16,22 @@ import java.util.Optional;
 @Service
 public class DiningTableService {
     private final DiningTableRepository diningTableRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public DiningTableService(DiningTableRepository diningTableRepository) {
+    public DiningTableService(DiningTableRepository diningTableRepository, RestaurantRepository restaurantRepository) {
         this.diningTableRepository = diningTableRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
-    public boolean saveDiningTable(DiningTable diningTable) {
+    public boolean saveDiningTable(Integer tableNumber, Integer seatingCapacity, Long restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        DiningTable diningTable = new DiningTable();
+        diningTable.setTableNumber(tableNumber);
+        diningTable.setSeatingCapacity(seatingCapacity);
+        diningTable.setRestaurant(restaurant);
+
         diningTableRepository.save(diningTable);
         return true;
     }

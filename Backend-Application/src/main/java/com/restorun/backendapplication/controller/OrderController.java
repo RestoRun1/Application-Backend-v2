@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restorun.backendapplication.model.Order;
 import com.restorun.backendapplication.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,24 +28,45 @@ public class OrderController {
     }
 
     @PostMapping("/saveOrder")
+    @Operation(summary = "Save an order", description = "Saves a new order based on the provided details")
     public ResponseEntity<String> saveOrder(@RequestBody JsonNode orderJson) {
         try {
+            Long tableId = orderJson.get("tableId").asLong();
+            Long customerId = orderJson.get("customerId").asLong();
+            String status = orderJson.get("status").asText();
+            int quantity = orderJson.get("quantity").asInt();
             List<Long> mealIds = objectMapper.readValue(
                     orderJson.get("mealIds").toString(), new TypeReference<List<Long>>(){}
             );
-            Long tableId = orderJson.get("tableId").asLong();
-            String status = orderJson.get("status").asText();
-
-            boolean isSaved = orderService.saveOrder(mealIds, tableId, status);
+            boolean isSaved = orderService.saveOrder(tableId, customerId, mealIds, status, quantity);
             if (isSaved) {
                 return ResponseEntity.ok("{\"message\": \"Order saved successfully\"}");
             } else {
                 return ResponseEntity.badRequest().body("{\"error\": \"Failed to save order\"}");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return ResponseEntity.badRequest().body("{\"error\": \"Error processing JSON: " + e.getMessage() + "\"}");
         }
     }
+
+    /*try {
+        List<Long> mealIds = objectMapper.readValue(
+                orderJson.get("mealIds").toString(), new TypeReference<List<Long>>(){}
+        );
+        Long tableId = orderJson.get("tableId").asLong();
+        String status = orderJson.get("status").asText();
+        int quantity = orderJson.get("quantity").asInt();
+
+        boolean isSaved = orderService.saveOrder(mealIds, tableId, status, quantity);
+        if (isSaved) {
+            return ResponseEntity.ok("{\"message\": \"Order saved successfully\"}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"error\": \"Failed to save order\"}");
+        }
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body("{\"error\": \"Error processing JSON: " + e.getMessage() + "\"}");
+    }*/
 
     @GetMapping("/retrieveOrderById/{id}")
     public ResponseEntity<Order> retrieveOrderById(@PathVariable Long id) {
