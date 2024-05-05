@@ -31,7 +31,7 @@ public class CustomerController {
         this.objectMapper = objectMapper;
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    // @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("retrieveCustomerById")
     public ResponseEntity<Customer> retrieveCustomerById(@RequestBody Long id) {
         Optional<Customer> customer = Optional.ofNullable(customerService.retrieveCustomerById(id));

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -48,4 +49,12 @@ public class ChefController {
         return ResponseEntity.ok("Chef saved successfully");
     }
 
+    @GetMapping("/retrieveAllChefs")
+    public ResponseEntity<List<Chef>> retrieveAllChefs() {
+        List<Chef> chefs = chefService.retrieveAllChefs();
+        if (chefs.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(chefs);
+    }
 }

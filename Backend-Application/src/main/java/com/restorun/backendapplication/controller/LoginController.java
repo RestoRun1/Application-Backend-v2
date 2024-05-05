@@ -29,7 +29,7 @@ public class LoginController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         System.out.println("Login attempt for: " + request.getUsername());
 
-        AuthenticatedUser user = Stream.of(adminService, chefService, customerService, employeeService, managerService, waiterService)
+        AuthenticatedUser user = Stream.of(adminService, chefService, customerService, managerService, waiterService)
                 .map(service -> {
                     AuthenticatedUser au = service.authenticate(request.getUsername(), request.getPassword());
                     if (au != null) {

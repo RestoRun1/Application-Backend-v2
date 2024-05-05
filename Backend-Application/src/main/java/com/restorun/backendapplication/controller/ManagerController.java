@@ -1,6 +1,7 @@
 package com.restorun.backendapplication.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.restorun.backendapplication.model.Manager;
 import com.restorun.backendapplication.service.ManagerService;
@@ -50,17 +51,19 @@ public class ManagerController {
         return ResponseEntity.ok("Manager deleted successfully");
     }
 
-    @PostMapping("/addManager")
-    public ResponseEntity<String> addManager(@RequestBody String manager ) throws JsonProcessingException {
-
-        ObjectMapper mapper = new ObjectMapper();
-        Manager managerObj = mapper.readValue(manager, Manager.class);
-
-        boolean saved = managerService.saveManager(managerObj);
-        if (!saved) {
-            return ResponseEntity.badRequest().build();
+    @PostMapping("/saveManager")
+    public ResponseEntity<String> saveManager(@RequestBody JsonNode managerJson){
+        Manager manager;
+        try {
+            manager = new ObjectMapper().treeToValue(managerJson, Manager.class);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body("{\"error\": \"Error processing JSON\"}");
         }
-        return ResponseEntity.ok("Manager saved successfully");
-
+        boolean isSaved = managerService.saveManager(manager);
+        if (isSaved) {
+            return ResponseEntity.ok("{\"message\": \"Manager saved successfully\"}");
+        } else {
+            return ResponseEntity.badRequest().body("{\"error\": \"Failed to save manager\"}");
+        }
     }
 }
