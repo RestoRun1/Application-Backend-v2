@@ -1,5 +1,7 @@
 package com.restorun.backendapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.restorun.backendapplication.enums.MealCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,7 @@ public class Meal {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
+    @JsonIgnore
     private Restaurant restaurant;
 
     public Meal(Long id, String name, String description, Double price, MealCategory category, Double rating) {
@@ -40,6 +43,11 @@ public class Meal {
         this.price = price;
         this.category = category;
         this.rating = rating;
+    }
+
+    @JsonProperty("restaurantId")
+    public Long getRestaurantId() {
+        return restaurant.getId();
     }
 // Constructors, getters, setters, and other methods are handled by Lombok
 }

@@ -29,7 +29,7 @@ public class Restaurant {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Meal> meals;
+    private Set<Meal> meals = new HashSet<>();
 
     /*@OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Manager> managers = new HashSet<>();*/

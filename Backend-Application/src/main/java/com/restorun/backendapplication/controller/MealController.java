@@ -3,6 +3,7 @@ package com.restorun.backendapplication.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.restorun.backendapplication.enums.MealCategory;
 import com.restorun.backendapplication.model.Meal;
 import com.restorun.backendapplication.service.MealService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,8 +36,18 @@ public class MealController {
 
     @PostMapping("/saveMeal")
     @Operation(summary = "Save a meal", description = "Saves a new meal or updates an existing meal based on the provided details")
-    public ResponseEntity<String> saveMeal(@RequestBody JsonNode mealJson) throws JsonProcessingException {
-        Meal meal;
+    public ResponseEntity<String> saveMeal(@RequestBody JsonNode mealJson){
+        Long restaurantId = mealJson.get("restaurantId").asLong();
+        String name = mealJson.get("name").asText();
+        String description = mealJson.get("description").asText();
+        Double price = mealJson.get("price").asDouble();
+        Double rating = mealJson.get("rating").asDouble();
+        MealCategory category = MealCategory.valueOf(mealJson.get("category").asText());
+
+        mealService.saveMeal(restaurantId, name, description, price, rating, category);
+        return ResponseEntity.ok("Meal saved successfully");
+
+        /*Meal meal;
         try {
             meal = objectMapper.treeToValue(mealJson, Meal.class);
         } catch (JsonProcessingException e) {
@@ -48,7 +59,7 @@ public class MealController {
             return ResponseEntity.ok("{\"message\": \"Meal saved successfully\"}");
         } else {
             return ResponseEntity.badRequest().body("{\"error\": \"Failed to save meal\"}");
-        }
+        }*/
     }
 
     @DeleteMapping("/deleteMeal/{id}")
@@ -61,7 +72,7 @@ public class MealController {
     }
 
     // return all meals in the system
-    @PreAuthorize("hasAuthority('ROLE_MANAGER') or hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_MANAGER') or hasAuthority('ROLE_ADMIN')")
     @GetMapping("/retrieveAllMeals")
     public ResponseEntity<List<Meal>> retrieveAllMeals() {
         List<Meal> meals = mealService.retrieveAllMeals();
