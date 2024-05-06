@@ -10,14 +10,15 @@ import jakarta.persistence.*;
 @Setter
 public class Manager extends Employee { // Assuming Manager extends from Employee
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
+    private Restaurant restaurant;*/
 
     public Manager() {
         super();
         this.role = Role.MANAGER;
     }
+
 
     // Constructors, getters, and setters are managed by Lombok annotations
 }

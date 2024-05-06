@@ -1,9 +1,12 @@
 package com.restorun.backendapplication.service;
 
 import com.restorun.backendapplication.dto.AuthenticatedUser;
+import com.restorun.backendapplication.enums.Role;
 import com.restorun.backendapplication.model.Admin;
 import com.restorun.backendapplication.model.Manager;
+import com.restorun.backendapplication.model.Restaurant;
 import com.restorun.backendapplication.repository.ManagerRepository;
+import com.restorun.backendapplication.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +19,12 @@ import java.util.Optional;
 @Transactional
 public class ManagerService implements UserAuthenticationService{
     private final ManagerRepository managerRepository;
+    private final RestaurantRepository restaurantRepository;
+
     @Autowired
-    public ManagerService(ManagerRepository managerRepository) {
+    public ManagerService(ManagerRepository managerRepository, RestaurantRepository restaurantRepository) {
         this.managerRepository = managerRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     @Transactional(readOnly = true)
@@ -36,7 +42,17 @@ public class ManagerService implements UserAuthenticationService{
         return null;
     }
 
-    public boolean saveManager(Manager manager) {
+    public boolean saveManager(Long restaurantId, String username, String email, String password, Role role) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        Manager manager = new Manager();
+        manager.setRestaurant(restaurant);
+        manager.setUsername(username);
+        manager.setEmail(email);
+        manager.setPassword(password);
+        manager.setRole(role);
+
         managerRepository.save(manager);
         return true;
     }
@@ -58,9 +74,10 @@ public class ManagerService implements UserAuthenticationService{
         return managerRepository.findById(manager.getUserId())
                 .map(existingManager -> {
                     existingManager.setEmail(manager.getEmail());
-                    existingManager.setRestaurant(manager.getRestaurant());
+                    existingManager.setPassword(manager.getPassword());
                     existingManager.setUsername(manager.getUsername());
                     existingManager.setRole(manager.getRole());
+                    existingManager.setRestaurant(restaurantRepository.findById(manager.getRestaurantId()).orElseThrow(() -> new RuntimeException("Restaurant not found")));
                     managerRepository.save(existingManager);
                     return true; // Indicates success
                 })

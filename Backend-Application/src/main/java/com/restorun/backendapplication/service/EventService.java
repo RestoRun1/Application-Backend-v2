@@ -1,21 +1,26 @@
 package com.restorun.backendapplication.service;
 
 import com.restorun.backendapplication.model.Event;
+import com.restorun.backendapplication.model.Restaurant;
 import com.restorun.backendapplication.repository.EventRepository;
+import com.restorun.backendapplication.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, RestaurantRepository restaurantRepository) {
         this.eventRepository = eventRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public Event retrieveEventById(Long id) {
@@ -46,7 +51,16 @@ public class EventService {
     }
 
     @Transactional
-    public boolean saveEvent(Event event) {
+    public boolean saveEvent(Long restaurantId, String title, String description, LocalDateTime startTime, LocalDateTime endTime) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
+
+        Event event = new Event();
+        event.setRestaurant(restaurant);
+        event.setTitle(title);
+        event.setDescription(description);
+        event.setStartTime(startTime);
+        event.setEndTime(endTime);
         eventRepository.save(event);
         return true;
     }

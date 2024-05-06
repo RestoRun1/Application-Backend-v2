@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.restorun.backendapplication.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +10,6 @@ import lombok.*;
 public class Employee extends User{
 
     // Employee specific fields
-
     @Getter
     @Setter
     @Column
@@ -79,5 +79,10 @@ public class Employee extends User{
                 ", \"role\":\"" + role + '\"' +
                 ", \"password\":\"" + password + '\"' +
                 '}';
+    }
+
+    @JsonProperty("restaurantId")
+    public Long getRestaurantId() {
+        return restaurant.getId();
     }
 }

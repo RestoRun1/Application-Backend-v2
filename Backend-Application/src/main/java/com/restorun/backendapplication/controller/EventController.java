@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,17 @@ public class EventController {
     @PostMapping("/saveEvent")
     @Operation(summary = "Save an event", description = "Saves a new event or updates an existing event based on the provided details")
     public ResponseEntity<String> saveEvent(@RequestBody JsonNode eventJson) {
-        Event event;
+        Long restaurantId = eventJson.get("restaurantId").asLong();
+        String title = eventJson.get("title").asText();
+        String description = eventJson.get("description").asText();
+        LocalDateTime startDateTime = LocalDateTime.parse(eventJson.get("startTime").asText());
+        LocalDateTime endDateTime = LocalDateTime.parse(eventJson.get("endTime").asText());
+
+        eventService.saveEvent(restaurantId, title, description, startDateTime, endDateTime);
+        return ResponseEntity.ok("Event saved successfully");
+
+
+        /*Event event;
         try {
             event = objectMapper.treeToValue(eventJson, Event.class);
         } catch (JsonProcessingException e) {
@@ -41,7 +52,7 @@ public class EventController {
             return ResponseEntity.ok("{\"message\": \"Event saved successfully\"}");
         } else {
             return ResponseEntity.badRequest().body("{\"error\": \"Failed to save event\"}");
-        }
+        }*/
     }
 
     @DeleteMapping("/deleteEvent/{id}")

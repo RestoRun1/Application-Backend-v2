@@ -3,8 +3,10 @@ package com.restorun.backendapplication.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.restorun.backendapplication.enums.Role;
 import com.restorun.backendapplication.model.Manager;
 import com.restorun.backendapplication.service.ManagerService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,8 +54,18 @@ public class ManagerController {
     }
 
     @PostMapping("/saveManager")
+    @Operation(summary = "Save a manager", description = "Saves a new manager or updates an existing manager based on the provided details")
     public ResponseEntity<String> saveManager(@RequestBody JsonNode managerJson){
-        Manager manager;
+        Long restaurantId = managerJson.get("restaurantId").asLong();
+        String username = managerJson.get("username").asText();
+        String email = managerJson.get("email").asText();
+        String password = managerJson.get("password").asText();
+        Role role = Role.valueOf(managerJson.get("role").asText());
+
+        managerService.saveManager(restaurantId, username, email, password, role);
+        return ResponseEntity.ok("{\"message\": \"Manager saved successfully\"}");
+
+        /*Manager manager;
         try {
             manager = new ObjectMapper().treeToValue(managerJson, Manager.class);
         } catch (JsonProcessingException e) {
@@ -64,6 +76,6 @@ public class ManagerController {
             return ResponseEntity.ok("{\"message\": \"Manager saved successfully\"}");
         } else {
             return ResponseEntity.badRequest().body("{\"error\": \"Failed to save manager\"}");
-        }
+        }*/
     }
 }

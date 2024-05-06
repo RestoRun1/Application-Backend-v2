@@ -1,5 +1,6 @@
 package com.restorun.backendapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -65,4 +66,8 @@ public class Event {
                 '}';
     }
 
+    @JsonProperty("restaurantId")
+    public Long getRestaurantId() {
+        return restaurant.getId();
+    }
 }

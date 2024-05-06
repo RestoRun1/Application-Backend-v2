@@ -42,7 +42,7 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
-    public boolean updateRestaurant(Restaurant restaurant) {
+    /*public boolean updateRestaurant(Restaurant restaurant) {
         return restaurantRepository.findById(restaurant.getId())
                 .map(existingRestaurant -> {
                     existingRestaurant.setAddress(existingRestaurant.getAddress());
@@ -58,5 +58,5 @@ public class RestaurantService {
                     return true; // Indicates success
                 })
                 .orElseThrow(() -> new RuntimeException("Restaurant not found with id: " + restaurant.getId()));
-    }
+    }*/
 }
