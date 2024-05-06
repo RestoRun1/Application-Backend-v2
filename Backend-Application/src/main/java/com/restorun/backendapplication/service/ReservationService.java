@@ -3,9 +3,12 @@ package com.restorun.backendapplication.service;
 import com.restorun.backendapplication.model.Customer;
 import com.restorun.backendapplication.model.DiningTable;
 import com.restorun.backendapplication.model.Reservation;
+import com.restorun.backendapplication.model.Restaurant;
 import com.restorun.backendapplication.repository.CustomerRepository;
 import com.restorun.backendapplication.repository.DiningTableRepository;
 import com.restorun.backendapplication.repository.ReservationRepository;
+import com.restorun.backendapplication.repository.RestaurantRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +23,14 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final CustomerRepository customerRepository;
     private final DiningTableRepository diningTableRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, CustomerRepository customerRepository, DiningTableRepository diningTableRepository) {
+    public ReservationService(RestaurantRepository restaurantRepository ,ReservationRepository reservationRepository, CustomerRepository customerRepository, DiningTableRepository diningTableRepository) {
         this.reservationRepository = reservationRepository;
         this.customerRepository = customerRepository;
         this.diningTableRepository = diningTableRepository;
+        this.restaurantRepository = restaurantRepository;
     }
 
     @Transactional(readOnly = true)
@@ -33,7 +38,9 @@ public class ReservationService {
         return reservationRepository.findById(id);
     }
 
-    public boolean saveReservation(Long tableId, Long customerId, LocalDateTime reservationTime, int numberOfGuests, String specialRequests) {
+    public boolean saveReservation(Long restaurantId,Long tableId, Long customerId, LocalDateTime reservationTime, int numberOfGuests, String specialRequests) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new RuntimeException("Restaurant not found"));
+        
         DiningTable table = diningTableRepository.findById(tableId)
                 .orElseThrow(() -> new RuntimeException("Table not found"));
         Customer customer = customerRepository.findById(customerId)
@@ -45,6 +52,7 @@ public class ReservationService {
         reservation.setReservationTime(reservationTime);
         reservation.setNumberOfGuests(numberOfGuests);
         reservation.setSpecialRequests(specialRequests);
+        reservation.setRestaurant(restaurant);
 
         reservationRepository.save(reservation);
         return true;

@@ -55,8 +55,11 @@ public class ReservationController {
         LocalDateTime reservationTime = LocalDateTime.parse(reservationJson.get("reservationTime").asText());
         int numberOfGuests = reservationJson.get("numberOfGuests").asInt();
         String specialRequests = reservationJson.get("specialRequests").asText();
+        Long restaurantId = reservationJson.get("restaurantId").asLong();
 
-        reservationService.saveReservation(tableId, customerId, reservationTime, numberOfGuests, specialRequests);
+        System.out.println("RESTAUURANT ID IS ->>>>>" + restaurantId);
+
+        reservationService.saveReservation(restaurantId,tableId, customerId, reservationTime, numberOfGuests, specialRequests);
         return ResponseEntity.ok("{\"message\": \"Reservation saved successfully\"}");
     }
 
