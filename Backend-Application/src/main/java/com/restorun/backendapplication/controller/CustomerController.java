@@ -3,6 +3,7 @@ package com.restorun.backendapplication.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.restorun.backendapplication.enums.Role;
 import com.restorun.backendapplication.model.Customer;
 import com.restorun.backendapplication.model.Restaurant;
 import com.restorun.backendapplication.service.CustomerService;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -75,6 +77,60 @@ public class CustomerController {
         }
         return ResponseEntity.ok(customers);
     }
+
+    @PostMapping("/saveCustomerMobile")
+    public ResponseEntity<String> saveCustomerMobile(@RequestBody Map<String, Object> customerBody ) {
+
+        String username = (String) customerBody.get("username");
+        String email = (String) customerBody.get("email");
+        String password = (String) customerBody.get("password"); 
+        String confirmedPassword = (String) customerBody.get("confirmedPassword");
+        String phoneNumber = (String) customerBody.get("phoneNumber");
+
+        if(username.length() == 0){
+            return ResponseEntity.badRequest().body("Username cannot be empty");
+        }
+
+        if(!password.equals(confirmedPassword)){
+            return ResponseEntity.badRequest().body("password did not matched");
+        }
+
+        Customer customer = new Customer();
+        customer.setUsername(username);
+        customer.setEmail(email);
+        customer.setPassword(password);
+        customer.setRole(Role.CUSTOMER);
+        customer.setPhoneNumber(phoneNumber);
+        
+        boolean saved = customerService.saveCustomerMobile(customer);
+        if (!saved) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        System.out.println("Customer is" + customer.toString());
+
+        return ResponseEntity.ok("Customer saved successfully");
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<Customer> loginCustomer(
+        @RequestParam String username,
+        @RequestParam String password
+    ){
+
+        Customer customer = customerService.retrieveByUsernamePasswordMobile(username, password);
+        
+        if(customer == null){
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        else{
+            System.out.println(customer.toString());
+        }
+        
+        return ResponseEntity.ok(customer);
+    }
+
 
     /*@GetMapping("retrieveCustomerByEmail")
     public ResponseEntity<Customer> retrieveCustomerByEmail(@RequestBody JsonNode email) {

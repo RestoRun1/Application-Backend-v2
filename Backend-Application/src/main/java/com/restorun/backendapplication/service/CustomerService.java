@@ -52,6 +52,11 @@ public class CustomerService implements UserAuthenticationService{
         return true;
     }
 
+    public boolean saveCustomerMobile(Customer customer) {
+        customerRepository.save(customer);
+        return true;
+    }
+
     public Customer findByUsername(String username) {
         return customerRepository.findByUsername(username);
     }
@@ -62,6 +67,10 @@ public class CustomerService implements UserAuthenticationService{
 
     public Customer retrieveByUsernamePassword(String username, String password){
         return customerRepository.findByUsernameAndPassword(username, password);
+    }
+
+    public Customer retrieveByUsernamePasswordMobile(String username, String password){
+        return customerRepository.findByUsernameAndPasswordMobile(username, password);
     }
 
     public Customer findOrCreateCustomer(CustomerDTO customerDTO) {
