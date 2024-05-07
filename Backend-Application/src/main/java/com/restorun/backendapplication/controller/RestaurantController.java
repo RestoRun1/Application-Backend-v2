@@ -70,9 +70,6 @@ public class RestaurantController {
     // return all restaurants in the system
     @GetMapping("/retrieveAllRestaurants")
     public ResponseEntity<List<Restaurant>> retrieveAllRestaurants() {
-
-        System.out.println("SADJK");
-
         List<Restaurant> restaurants = restaurantService.retrieveAllRestaurants();
         if (restaurants.isEmpty()) {
             return ResponseEntity.notFound().build();

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,7 +23,7 @@ public class Order {
 
     @ManyToMany
     @JoinTable(name = "order_meals")
-    @JsonIgnore
+    /*@JsonIgnore*/
     private List<Meal> meals; // A list of meals in the order
 
     @Column(nullable = false)
@@ -30,6 +32,10 @@ public class Order {
     // @TODO MEALS NEEDS TO HAVE QUANTITY PROPERTY
     @Column(nullable = false)
     private Integer quantity;
+
+    // @TODO ADD ORDER TIME
+    /*@Column(nullable = false)
+    private LocalDateTime orderTime;*/
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status; // "ready", "pending", "etc..."

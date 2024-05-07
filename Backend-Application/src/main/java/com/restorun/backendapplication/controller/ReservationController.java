@@ -57,8 +57,6 @@ public class ReservationController {
         String specialRequests = reservationJson.get("specialRequests").asText();
         Long restaurantId = reservationJson.get("restaurantId").asLong();
 
-        System.out.println("RESTAUURANT ID IS ->>>>>" + restaurantId);
-
         reservationService.saveReservation(restaurantId,tableId, customerId, reservationTime, numberOfGuests, specialRequests);
         return ResponseEntity.ok("{\"message\": \"Reservation saved successfully\"}");
     }

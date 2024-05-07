@@ -42,6 +42,8 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
+    // create a method to find all employees by restaurant id
+
     /*public boolean updateRestaurant(Restaurant restaurant) {
         return restaurantRepository.findById(restaurant.getId())
                 .map(existingRestaurant -> {

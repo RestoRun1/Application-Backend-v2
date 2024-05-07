@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -49,6 +51,15 @@ public class EmployeeController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok("Employee saved successfully");
+    }
+
+    @GetMapping("/retrieveAllEmployeesByRestaurantId/{restaurantId}")
+    public ResponseEntity<List<Employee>> retrieveAllEmployeesByRestaurantId(@PathVariable Long restaurantId) {
+        List<Employee> employees = employeeService.retrieveAllEmployeesInRestaurant(restaurantId);
+        if (employees.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(employees);
     }
 
 }

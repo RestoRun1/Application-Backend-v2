@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class EmployeeService implements UserAuthenticationService{
@@ -48,5 +49,8 @@ public class EmployeeService implements UserAuthenticationService{
         return employeeRepository.findById(id).orElse(null);
     }
 
+    public List<Employee> retrieveAllEmployeesInRestaurant(Long restaurantId) {
+        return employeeRepository.retrieveAllEmployeesInRestaurant(restaurantId);
+    }
 
 }
